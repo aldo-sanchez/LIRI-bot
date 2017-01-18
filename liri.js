@@ -2,14 +2,11 @@ var Twitter = require('twitter');
 
 var importTwitter = require('./keys.js');
 var keysTwitter = importTwitter.keysTwitter;
-console.log(keysTwitter)
 
 var client = new Twitter(keysTwitter);
 
-console.log(client)
-
 client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response) {
-   console.log(tweets);
+  //  console.log(tweets);
 });
 
 // client.post('statuses/update', {status: 'Posting from node.js'}, function(error, tweet, response){
@@ -17,3 +14,10 @@ client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response) {
 //   console.log(tweet);
 //   // console.log(response);
 // });
+
+var spotify = require('spotify');
+
+spotify.search({type: 'track', query: 'dancing in the moonlight'}, function(error, data){
+  if(error) throw error;
+  console.log(data.tracks.items[0])
+})
