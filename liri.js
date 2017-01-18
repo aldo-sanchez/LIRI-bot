@@ -19,5 +19,14 @@ var spotify = require('spotify');
 
 spotify.search({type: 'track', query: 'dancing in the moonlight'}, function(error, data){
   if(error) throw error;
-  console.log(data.tracks.items[0])
+  // console.log(data.tracks.items[0])
+});
+
+var request = require('request');
+
+var url = 'http://www.omdbapi.com/?t=gladiator&y=&plot=short&r=json';
+
+request(url,function(error, response, body){
+  if(error) throw error;
+  console.log(body)
 })
