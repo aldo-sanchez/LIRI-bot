@@ -1,0 +1,10 @@
+{
+  "name": "LIRI-bot",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/aldo-sanchez/LIRI-bot.git",
+  "license": "MIT",
+  "dependencies": {
+    "twitter": "^1.7.0"
+  }
+}
