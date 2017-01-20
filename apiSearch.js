@@ -23,10 +23,17 @@ Search.prototype.tweets = function(){
 var spotify = require('spotify');
 
 Search.prototype.song = function(song){
-  console.log('wow')
   spotify.search({type: 'track', query: song}, function(error, data){
   if(error) throw error;
-  console.log(data.tracks.items[0])
+  var artistName = data.tracks.items[0].artists[0].name;
+  var songName = data.tracks.items[0].name;
+  var previewLink = data.tracks.items[0].preview_url;
+  var albumName = data.tracks.items[0].album.name;
+  
+  console.log(artistName);
+  console.log(songName);
+  console.log(albumName);
+  console.log(previewLink);
 });
 }
 
