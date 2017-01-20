@@ -1,12 +1,17 @@
+var command = process.argv[2];
+var mediaName = process.argv.splice(3).join(' ');
+
+console.log('command', command);
+console.log('mediaName', mediaName);
+
 var Twitter = require('twitter');
 
-var importTwitter = require('./keys.js');
-var keysTwitter = importTwitter.keysTwitter;
+var keysTwitter = require('./keys.js');
 
 var client = new Twitter(keysTwitter);
 
 client.get('statuses/user_timeline', {screen_name: '@willbeard4food', count: 10}, function(error, tweets, response) {
-   console.log(tweets);
+  //  console.log(tweets);
 });
 
 // client.post('statuses/update', {status: 'Posting from node.js'}, function(error, tweet, response){
