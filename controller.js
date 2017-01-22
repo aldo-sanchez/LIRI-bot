@@ -22,7 +22,7 @@ ControllerObject.prototype.getMovie = function(movie){
 
 ControllerObject.prototype.getHelp = function(){
   helpText = 'Available commands:\n'
-  tweetHelp = 'tweet-this         will display last 20 tweets \n' 
+  tweetHelp = 'my-tweets         will display last 20 tweets \n' 
   movieHelp = 'movie-this         will display movie information \n'
   songHelp = 'spotify-this-song  get song information \n'
   doWhatHelp = 'do-what-it-says:   not quite sure what this does';

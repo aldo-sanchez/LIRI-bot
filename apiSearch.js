@@ -38,17 +38,26 @@ Search.prototype.tweets = function(){
 var spotify = require('spotify');
 
 Search.prototype.song = function(song){
-  spotify.search({type: 'track', query: song}, function(error, data){
+  spotify.search({type: 'track', query: song}, function(error, response){
   if(error) throw error;
-  var artistName = data.tracks.items[0].artists[0].name;
-  var songName = data.tracks.items[0].name;
-  var previewLink = data.tracks.items[0].preview_url;
-  var albumName = data.tracks.items[0].album.name;
+  var data = response.tracks;
+  var songCount = data.items.length;
   
-  console.log(artistName);
-  console.log(songName);
-  console.log(albumName);
-  console.log(previewLink);
+  for(i = 0; i < songCount; i++){
+    var artistName = data.items[i].artists[0].name;
+    var songName = data.items[i].name;
+    var previewLink = data.items[i].preview_url;
+    var albumName = data.items[i].album.name;
+
+    console.log(artistName);
+    console.log(songName);
+    console.log(albumName);
+    console.log(previewLink + '\n');
+
+  }
+  
+  
+
 });
 }
 
@@ -59,19 +68,24 @@ Search.prototype.movie = function(movie){
   var url = 'http://www.omdbapi.com/?t='+movie+'&y=&plot=short&tomatoes=true&r=json';
   request(url,function(error, response, body){
     if(error) throw error;
-    title = JSON.parse(body).Title;
-    year = JSON.parse(body).Year; 
-    rating = JSON.parse(body).imdbRating;
-    country = JSON.parse(body).Country;
-    language = JSON.parse(body).Language;
-    plot = JSON.parse(body).Plot;
-    actors = JSON.parse(body).Actors;
-    tomatoRating = JSON.parse(body).tomatoRating;
-    tomatoURL = JSON.parse(body).tomatoURL;
+    body = JSON.parse(body);
 
+    movie = {
+      title: body.Title,
+      year: body.Year,
+      rating: body.imdbRating,
+      country: body.Country,
+      language: body.Language,
+      plot: body.Plot,
+      actors: body.Actors,
+      tomatoRating: body.tomatoRating,
+      tomatoURL: body.tomatoURL
+    }
 
-  console.log(title, year, rating, country, language, plot, actors, tomatoRating, tomatoURL);
-});
-}
+    for(key in movie){
+      console.log(key + ': ' + movie[key]);
+    };
+  });
+};
 
 module.exports = Search;
