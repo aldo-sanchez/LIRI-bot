@@ -33,6 +33,7 @@ Search.prototype.tweets = function(){
       }
       console.log('\n');
     };
+    return tweetObj;
   });
 
   // client.post('statuses/update', {status: 'Posting from node.js'}, function(error, tweet, response){

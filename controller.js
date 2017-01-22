@@ -1,13 +1,17 @@
+fs = require('fs');
+
 function ControllerObject(command, mediaName){
   this.command = command;
   this.mediaName = mediaName;
 };
+
 var Search = require('./apiSearch.js')
 var newSearch = new Search();
 
 ControllerObject.prototype.getTweets = function(){
   console.log('insideTweets');
-  newSearch.tweets();
+  var tweets = newSearch.tweets();
+  console.log(tweets);
 };
 
 ControllerObject.prototype.getSong = function(song){
@@ -27,6 +31,10 @@ ControllerObject.prototype.getHelp = function(){
   songHelp = 'spotify-this-song  get song information \n'
   doWhatHelp = 'do-what-it-says:   not quite sure what this does';
   console.log(helpText, tweetHelp, movieHelp, songHelp, doWhatHelp);
+}
+
+ControllerObject.prototype.write2File = function(){
+  console.log(this.command,this.mediaName);
 }
 
 module.exports = ControllerObject;
