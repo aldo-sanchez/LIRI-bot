@@ -7,7 +7,7 @@ var keysTwitter = require('./keys.js');
 
 var client = new Twitter(keysTwitter);
 
-Search.prototype.tweets = function(display2Console, write2File){
+Search.prototype.tweets = function(command, mediaName, display2Console, write2File){
   twitterInfo = {
     screen_name: '@willbeard4food',
     count: 20
@@ -20,7 +20,7 @@ Search.prototype.tweets = function(display2Console, write2File){
     tweets.length < twitterInfo.count ? twitterCount = tweets.length : twitterCount = twitterInfo.count;
     var tweetObj = {};
 
-    for(i = 0; i < twitterCount; i++){
+    for(i = 0; i < twitterCount;  i++){
       var tweetKey = 'tweet'+i;
       
       tweetObj[tweetKey] = {
@@ -28,6 +28,7 @@ Search.prototype.tweets = function(display2Console, write2File){
         tweet: tweets[i].text
       };
     };
+    write2File(command, mediaName, tweetObj);
     display2Console(tweetObj);
   });
 };
@@ -35,7 +36,7 @@ Search.prototype.tweets = function(display2Console, write2File){
 // Spotify
 var spotify = require('spotify');
 
-Search.prototype.song = function(song, display2Console){
+Search.prototype.song = function(command, song, display2Console, write2File){
   spotify.search({type: 'track', query: song}, function(error, response){
   if(error) throw error;
   var data = response.tracks;
@@ -50,14 +51,15 @@ Search.prototype.song = function(song, display2Console){
       preview: data.items[i].preview_url,
       album: data.items[i].album.name
     }; 
-  }
+  };
+  write2File(command, song, songObj);
   display2Console(songObj);
 });
 }
 
 // OMDB
 var request = require('request');
-Search.prototype.movie = function(movie, display2Console){
+Search.prototype.movie = function(command, movie, display2Console, write2File){
   var url = 'http://www.omdbapi.com/?t='+movie+'&y=&plot=short&tomatoes=true&r=json';
   request(url,function(error, response, body){
     if(error) throw error;
@@ -75,6 +77,7 @@ Search.prototype.movie = function(movie, display2Console){
       tomatoRating: body.tomatoRating,
       tomatoURL: body.tomatoURL
     };
+    write2File(command, movie, movieObj);
     display2Console(movieObj);
   });
 };

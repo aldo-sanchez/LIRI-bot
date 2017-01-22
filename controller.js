@@ -9,16 +9,19 @@ var Search = require('./apiSearch.js')
 var newSearch = new Search();
 
 ControllerObject.prototype.getTweets = function(){
-  newSearch.tweets(this.display2Console, this.write2File);
-  // console.log(tweets);
+  newSearch.tweets(this.command, this.mediaName, this.display2Console, this.write2File);
 };
 
-ControllerObject.prototype.getSong = function(song){
-  newSearch.song(song, this.display2Console);
+ControllerObject.prototype.getSong = function(){
+  if(this.mediaName == ''){this.mediaName = 'the sign ace of base'};
+
+  newSearch.song(this.command, this.mediaName, this.display2Console, this.write2File);
 }
 
-ControllerObject.prototype.getMovie = function(movie){
-  newSearch.movie(movie, this.display2Console);
+ControllerObject.prototype.getMovie = function(){
+  if(this.mediaName == ''){this.mediaName = 'mr nobody'};
+
+  newSearch.movie(this.command, this.mediaName, this.display2Console, this.write2File);
 }
 
 ControllerObject.prototype.getHelp = function(){
@@ -30,14 +33,28 @@ ControllerObject.prototype.getHelp = function(){
   console.log(helpText, tweetHelp, movieHelp, songHelp, doWhatHelp);
 }
 
-ControllerObject.prototype.write2File = function(obj){
-  // console.log('test',obj);
+//write2File writes command, mediaName and the results returned from search on a file named log.txt. this method takes command, mediaName, and an object as parameters.
+ControllerObject.prototype.write2File = function(command, mediaName, obj){
+  //logText will be used to log the command, mediaName, timeStamp and results.  we begin by defining it with timestamp, command, and mediaName.
+  var logText = 'timestamp: ' + Math.floor(Date.now() / 1000) + ',' + 'command: ' + command + ',' + 'mediaName: ' + mediaName + ',';
+
+  //objText will be used to collect the search response obj.  this object can be made up of information about tweets, songs, or movies. some strings inside obj can contain new lines so we write a regex string to find new lines.
+  var objText = '';
+  var newLineRegex = /\r?\n|\r/g;
   for(firstKey in obj){
+    objText += firstKey + ': '
     for(secondKey in obj[firstKey]){
-      console.log(secondKey + ': ' + obj[firstKey][secondKey]);
+      objText += secondKey + ': ' + obj[firstKey][secondKey] + ','
     }
-    console.log('\n')
   }
+  objText = objText.replace(newLineRegex, ''); //replace new lines with an empty space.
+
+  logText += objText + '\n'; //add objText and a new line to logText
+
+  //write to log.txt
+  fs.appendFile('log.txt', logText, function(error){
+    if(error) throw error;
+  });
 }
 
 ControllerObject.prototype.display2Console = function(obj){

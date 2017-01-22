@@ -7,15 +7,15 @@ var myController = new Controller(command, mediaName);
 switch(command){
   case 'my-tweets':
     console.log('these are my tweets: \n');
-    myController.getTweets();
+    myController.getTweets(myController.command, myController.mediaName);
     break;
   case 'spotify-this-song':
     console.log('these are some songs: \n');
-    myController.getSong(myController.mediaName);
+    myController.getSong(myController.command, myController.mediaName);
     break;
   case 'movie-this':
     console.log('this is my movie: \n')
-    myController.getMovie(myController.mediaName)
+    myController.getMovie(myController.command, myController.mediaName);
     break;
   case 'do-what-it-says':
     console.log('not quite sure what this is');
@@ -23,5 +23,5 @@ switch(command){
   case 'help':
     myController.getHelp();
     break;
-  default: console.log('not an available command');
+  default: console.log('not an available command\n for available commands type: node liri.js help');
 };
