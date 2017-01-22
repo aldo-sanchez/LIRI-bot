@@ -18,12 +18,20 @@ Search.prototype.tweets = function(){
     // check tweet count.  if tweets are less than the 20 default then loop for the actual tweet count.  otherwise loop for the default 20
     var twitterCount;
     tweets.length < twitterInfo.count ? twitterCount = tweets.length : twitterCount = twitterInfo.count;
+    var tweetObj = {};
 
     for(i = 0; i < twitterCount; i++){
-      var createdOn = tweets[i].created_at;
-      var tweetText = tweets[i].text;
-      console.log('created on:', createdOn)
-      console.log('tweet:',tweetText+'\n')
+      var tweetKey = 'tweet'+i;
+      
+      tweetObj[tweetKey] = {
+        created: tweets[i].created_at,
+        tweet: tweets[i].text
+      }
+
+      for(key in tweetObj[tweetKey]){
+        console.log(key + ': ' + tweetObj[tweetKey][key]);
+      }
+      console.log('\n');
     };
   });
 
@@ -42,22 +50,21 @@ Search.prototype.song = function(song){
   if(error) throw error;
   var data = response.tracks;
   var songCount = data.items.length;
-  
+  songObj = {};
+
   for(i = 0; i < songCount; i++){
-    var artistName = data.items[i].artists[0].name;
-    var songName = data.items[i].name;
-    var previewLink = data.items[i].preview_url;
-    var albumName = data.items[i].album.name;
-
-    console.log(artistName);
-    console.log(songName);
-    console.log(albumName);
-    console.log(previewLink + '\n');
-
+    var songKey = 'song'+i;
+    songObj[songKey] = {
+      artist: data.items[i].artists[0].name,
+      song: data.items[i].name,
+      preview: data.items[i].preview_url,
+      album: data.items[i].album.name
+    }; 
+    for(key in songObj[songKey]){
+      console.log(key + ': ' + songObj[songKey][key]);
+    }
+    console.log('\n')
   }
-  
-  
-
 });
 }
 
@@ -70,7 +77,7 @@ Search.prototype.movie = function(movie){
     if(error) throw error;
     body = JSON.parse(body);
 
-    movie = {
+    movieObj = {
       title: body.Title,
       year: body.Year,
       rating: body.imdbRating,
@@ -82,8 +89,8 @@ Search.prototype.movie = function(movie){
       tomatoURL: body.tomatoURL
     }
 
-    for(key in movie){
-      console.log(key + ': ' + movie[key]);
+    for(key in movieObj){
+      console.log(key + ': ' + movieObj[key]);
     };
   });
 };
