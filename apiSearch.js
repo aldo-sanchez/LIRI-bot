@@ -7,7 +7,7 @@ var keysTwitter = require('./keys.js');
 
 var client = new Twitter(keysTwitter);
 
-Search.prototype.tweets = function(){
+Search.prototype.tweets = function(display2Console, write2File){
   twitterInfo = {
     screen_name: '@willbeard4food',
     count: 20
@@ -26,27 +26,16 @@ Search.prototype.tweets = function(){
       tweetObj[tweetKey] = {
         created: tweets[i].created_at,
         tweet: tweets[i].text
-      }
-
-      for(key in tweetObj[tweetKey]){
-        console.log(key + ': ' + tweetObj[tweetKey][key]);
-      }
-      console.log('\n');
+      };
     };
-    return tweetObj;
+    display2Console(tweetObj);
   });
-
-  // client.post('statuses/update', {status: 'Posting from node.js'}, function(error, tweet, response){
-  //   if(error) throw error;
-  //   console.log(tweet);
-  //   // console.log(response);
-  // });
 };
 
 // Spotify
 var spotify = require('spotify');
 
-Search.prototype.song = function(song){
+Search.prototype.song = function(song, display2Console){
   spotify.search({type: 'track', query: song}, function(error, response){
   if(error) throw error;
   var data = response.tracks;
@@ -61,24 +50,21 @@ Search.prototype.song = function(song){
       preview: data.items[i].preview_url,
       album: data.items[i].album.name
     }; 
-    for(key in songObj[songKey]){
-      console.log(key + ': ' + songObj[songKey][key]);
-    }
-    console.log('\n')
   }
+  display2Console(songObj);
 });
 }
 
 // OMDB
 var request = require('request');
-Search.prototype.movie = function(movie){
-  console.log('mov')
+Search.prototype.movie = function(movie, display2Console){
   var url = 'http://www.omdbapi.com/?t='+movie+'&y=&plot=short&tomatoes=true&r=json';
   request(url,function(error, response, body){
     if(error) throw error;
     body = JSON.parse(body);
+    movieObj = {};
 
-    movieObj = {
+    movieObj['movie'] = {
       title: body.Title,
       year: body.Year,
       rating: body.imdbRating,
@@ -88,11 +74,8 @@ Search.prototype.movie = function(movie){
       actors: body.Actors,
       tomatoRating: body.tomatoRating,
       tomatoURL: body.tomatoURL
-    }
-
-    for(key in movieObj){
-      console.log(key + ': ' + movieObj[key]);
     };
+    display2Console(movieObj);
   });
 };
 

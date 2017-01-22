@@ -9,19 +9,16 @@ var Search = require('./apiSearch.js')
 var newSearch = new Search();
 
 ControllerObject.prototype.getTweets = function(){
-  console.log('insideTweets');
-  var tweets = newSearch.tweets();
-  console.log(tweets);
+  newSearch.tweets(this.display2Console, this.write2File);
+  // console.log(tweets);
 };
 
 ControllerObject.prototype.getSong = function(song){
-  console.log('insideSong');
-  newSearch.song(song);
+  newSearch.song(song, this.display2Console);
 }
 
 ControllerObject.prototype.getMovie = function(movie){
-  console.log('insideMovie');
-  newSearch.movie(movie);
+  newSearch.movie(movie, this.display2Console);
 }
 
 ControllerObject.prototype.getHelp = function(){
@@ -33,8 +30,22 @@ ControllerObject.prototype.getHelp = function(){
   console.log(helpText, tweetHelp, movieHelp, songHelp, doWhatHelp);
 }
 
-ControllerObject.prototype.write2File = function(){
-  console.log(this.command,this.mediaName);
+ControllerObject.prototype.write2File = function(obj){
+  // console.log('test',obj);
+  for(firstKey in obj){
+    for(secondKey in obj[firstKey]){
+      console.log(secondKey + ': ' + obj[firstKey][secondKey]);
+    }
+    console.log('\n')
+  }
 }
 
+ControllerObject.prototype.display2Console = function(obj){
+  for(firstKey in obj){
+    for(secondKey in obj[firstKey]){
+      console.log(secondKey + ': ' + obj[firstKey][secondKey]);
+    }
+    console.log('\n')
+  }
+}
 module.exports = ControllerObject;
