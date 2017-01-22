@@ -1,3 +1,5 @@
+function Search(){};
+
 // Twitter
 var Twitter = require('twitter');
 
@@ -5,11 +7,24 @@ var keysTwitter = require('./keys.js');
 
 var client = new Twitter(keysTwitter);
 
-function Search(){};
-
 Search.prototype.tweets = function(){
-  client.get('statuses/user_timeline', {screen_name: '@willbeard4food', count: 10}, function(error, tweets, response) {
-     console.log(tweets);
+  twitterInfo = {
+    screen_name: '@willbeard4food',
+    count: 20
+  };
+  client.get('statuses/user_timeline', twitterInfo, function(error, tweets, response) {
+    if(error) throw error;
+
+    // check tweet count.  if tweets are less than the 20 default then loop for the actual tweet count.  otherwise loop for the default 20
+    var twitterCount;
+    tweets.length < twitterInfo.count ? twitterCount = tweets.length : twitterCount = twitterInfo.count;
+
+    for(i = 0; i < twitterCount; i++){
+      var createdOn = tweets[i].created_at;
+      var tweetText = tweets[i].text;
+      console.log('created on:', createdOn)
+      console.log('tweet:',tweetText+'\n')
+    };
   });
 
   // client.post('statuses/update', {status: 'Posting from node.js'}, function(error, tweet, response){
@@ -41,10 +56,21 @@ Search.prototype.song = function(song){
 var request = require('request');
 Search.prototype.movie = function(movie){
   console.log('mov')
-  var url = 'http://www.omdbapi.com/?t='+movie+'&y=&plot=short&r=json';
+  var url = 'http://www.omdbapi.com/?t='+movie+'&y=&plot=short&tomatoes=true&r=json';
   request(url,function(error, response, body){
-  if(error) throw error;
-  console.log(body)
+    if(error) throw error;
+    title = JSON.parse(body).Title;
+    year = JSON.parse(body).Year; 
+    rating = JSON.parse(body).imdbRating;
+    country = JSON.parse(body).Country;
+    language = JSON.parse(body).Language;
+    plot = JSON.parse(body).Plot;
+    actors = JSON.parse(body).Actors;
+    tomatoRating = JSON.parse(body).tomatoRating;
+    tomatoURL = JSON.parse(body).tomatoURL;
+
+
+  console.log(title, year, rating, country, language, plot, actors, tomatoRating, tomatoURL);
 });
 }
 
