@@ -16,13 +16,13 @@ ControllerObject.prototype.getSong = function(){
   if(this.mediaName == ''){this.mediaName = 'the sign ace of base'};
 
   newSearch.song(this.command, this.mediaName, this.display2Console, this.write2File);
-}
+};
 
 ControllerObject.prototype.getMovie = function(){
   if(this.mediaName == ''){this.mediaName = 'mr nobody'};
 
   newSearch.movie(this.command, this.mediaName, this.display2Console, this.write2File);
-}
+};
 
 ControllerObject.prototype.getHelp = function(){
   helpText = 'Available commands:\n'
@@ -31,7 +31,7 @@ ControllerObject.prototype.getHelp = function(){
   songHelp = 'spotify-this-song  get song information \n'
   doWhatHelp = 'do-what-it-says:   not quite sure what this does';
   console.log(helpText, tweetHelp, movieHelp, songHelp, doWhatHelp);
-}
+};
 
 //write2File writes command, mediaName and the results returned from search on a file named log.txt. this method takes command, mediaName, and an object as parameters.
 ControllerObject.prototype.write2File = function(command, mediaName, obj){
@@ -45,8 +45,8 @@ ControllerObject.prototype.write2File = function(command, mediaName, obj){
     objText += firstKey + ': '
     for(secondKey in obj[firstKey]){
       objText += secondKey + ': ' + obj[firstKey][secondKey] + ','
-    }
-  }
+    };
+  };
   objText = objText.replace(newLineRegex, ''); //replace new lines with an empty space.
 
   logText += objText + '\n'; //add objText and a new line to logText
@@ -55,14 +55,41 @@ ControllerObject.prototype.write2File = function(command, mediaName, obj){
   fs.appendFile('log.txt', logText, function(error){
     if(error) throw error;
   });
-}
+};
 
 ControllerObject.prototype.display2Console = function(obj){
   for(firstKey in obj){
     for(secondKey in obj[firstKey]){
       console.log(secondKey + ': ' + obj[firstKey][secondKey]);
-    }
+    };
     console.log('\n')
-  }
-}
+  };
+};
+
+ControllerObject.prototype.readRandom = function(){
+  var that = this;
+  fs.readFile('random.txt', 'utf8', function(error, data){
+    if(error) throw error;
+    var newLineRegex = /\r?\n|\r/g;
+    data = data.split('\n');
+    var dataArray = data.map(function(elem,index){
+      return elem.replace(newLineRegex,'').split(',');
+    });
+    var randomElem = Math.floor(Math.random()*dataArray.length);
+    that.command = dataArray[randomElem][0];
+    that.mediaName = dataArray[randomElem][1];
+    switch(that.command){
+      case 'my-tweets':
+        that.getTweets();
+        break;
+      case 'spotify-this-song':
+        that.getSong();
+        break;
+      case 'movie-this':
+        that.getMovie();
+        break;
+      default: 'try again?';
+    };
+  });
+};
 module.exports = ControllerObject;

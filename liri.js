@@ -18,7 +18,7 @@ switch(command){
     myController.getMovie(myController.command, myController.mediaName);
     break;
   case 'do-what-it-says':
-    console.log('not quite sure what this is');
+    myController.readRandom();
     break;
   case 'help':
     myController.getHelp();
